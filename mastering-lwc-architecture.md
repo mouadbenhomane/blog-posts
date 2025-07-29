@@ -16,8 +16,7 @@ Lightning Web Components (LWC) represent the future of Salesforce development, o
 
 The Container-Presenter pattern separates data management from presentation logic:
 
-\`\`\`javascript
-// Container Component (smart component)
+
 import { LightningElement, wire } from 'lwc';
 import getAccounts from '@salesforce/apex/AccountController.getAccounts';
 
@@ -33,9 +32,8 @@ export default class AccountContainer extends LightningElement {
         }));
     }
 }
-\`\`\`
 
-\`\`\`javascript
+
 // Presenter Component (dumb component)
 import { LightningElement, api } from 'lwc';
 
@@ -49,13 +47,13 @@ export default class AccountPresenter extends LightningElement {
         }));
     }
 }
-\`\`\`
+
 
 ### 2. Higher-Order Components
 
 Create reusable logic through composition:
 
-\`\`\`javascript
+
 // withLoading.js - Higher-order component pattern
 export function withLoading(BaseComponent) {
     return class extends BaseComponent {
@@ -75,7 +73,7 @@ export function withLoading(BaseComponent) {
         }
     };
 }
-\`\`\`
+
 
 ## State Management Strategies
 
@@ -83,7 +81,7 @@ export function withLoading(BaseComponent) {
 
 Implement a robust event system for component communication:
 
-\`\`\`javascript
+
 // Event Bus Service
 class EventBus extends EventTarget {
     static instance;
@@ -109,11 +107,11 @@ class EventBus extends EventTarget {
 }
 
 export default EventBus;
-\`\`\`
+
 
 ### 2. Centralized State Management
 
-\`\`\`javascript
+
 // stateManager.js
 class StateManager {
     constructor() {
@@ -146,13 +144,13 @@ class StateManager {
 }
 
 export default new StateManager();
-\`\`\`
+
 
 ## Performance Optimization Techniques
 
 ### 1. Lazy Loading Components
 
-\`\`\`javascript
+
 // Dynamic component loading
 export default class DynamicLoader extends LightningElement {
     componentToLoad;
@@ -166,11 +164,11 @@ export default class DynamicLoader extends LightningElement {
         }
     }
 }
-\`\`\`
+
 
 ### 2. Memoization and Caching
 
-\`\`\`javascript
+
 // Memoization utility
 function memoize(fn) {
     const cache = new Map();
@@ -199,13 +197,13 @@ export default class OptimizedComponent extends LightningElement {
         }));
     });
 }
-\`\`\`
+
 
 ## Error Handling and Resilience
 
 ### 1. Error Boundary Pattern
 
-\`\`\`javascript
+
 export default class ErrorBoundary extends LightningElement {
     @api fallbackComponent;
     hasError = false;
@@ -229,11 +227,11 @@ export default class ErrorBoundary extends LightningElement {
         this.errorInfo = null;
     }
 }
-\`\`\`
+
 
 ### 2. Graceful Degradation
 
-\`\`\`javascript
+
 export default class ResilientComponent extends LightningElement {
     @wire(getData)
     wiredData({ error, data }) {
@@ -260,13 +258,13 @@ export default class ResilientComponent extends LightningElement {
         return errorMap[error.type] || errorMap.DEFAULT;
     }
 }
-\`\`\`
+
 
 ## Testing Strategies
 
 ### 1. Component Testing
 
-\`\`\`javascript
+
 // __tests__/accountContainer.test.js
 import { createElement } from 'lwc';
 import AccountContainer from 'c/accountContainer';
@@ -302,7 +300,7 @@ describe('c-account-container', () => {
         expect(accountElements.length).toBe(2);
     });
 });
-\`\`\`
+
 
 ## Conclusion
 
