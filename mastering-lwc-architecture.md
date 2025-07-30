@@ -19,7 +19,7 @@ Lightning Web Components (LWC) represent the future of Salesforce development, o
 This pattern separates data management from presentation logic:
 
 ```javascript
-// Container Component (Smart Component)
+
 import { LightningElement, wire } from 'lwc';
 import getAccounts from '@salesforce/apex/AccountController.getAccounts';
 
