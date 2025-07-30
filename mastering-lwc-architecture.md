@@ -325,8 +325,12 @@ Mastering LWC architecture requires understanding and applying these advanced pa
 2. **Performance** – Use lazy loading and memoization effectively
 3. **Resilience** – Implement robust error handling and fallback UIs
 4. **Testability** – Write thorough unit tests to ensure reliability
+   
+<img width="970" height="321" alt="Exemple mail en anglais" src="https://github.com/user-attachments/assets/fb82f15c-53d3-4a55-9e42-3799d3a39de6" />
 
-By adopting these best practices, you'll build scalable, maintainable, and high-performing Lightning Web Components.
+By adopting these best practices, you'll build scalable, maintainable, and high-performing Lightning Web Components..
+
+
 
 ---
 
