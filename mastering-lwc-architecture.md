@@ -8,35 +8,35 @@ image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=500&h=300&fi
 
 # Mastering Lightning Web Components Architecture
 
-Lightning Web Components (LWC) represent the future of Salesforce development, offering modern JavaScript capabilities with enterprise-grade performance. In this comprehensive guide, we'll explore advanced architectural patterns that will elevate your LWC development skills.
+Lightning Web Components (LWC) represent the future of Salesforce development, offering modern JavaScript capabilities with enterprise-grade performance. In this comprehensive guide, we’ll explore advanced architectural patterns that will elevate your LWC development skills.
+
+---
 
 ## Component Composition Patterns
 
-### 1. Container-Presenter Pattern
+### 1. Container–Presenter Pattern
 
-The Container-Presenter pattern separates data management from presentation logic:
+This pattern separates data management from presentation logic:
 
-\`\`\`javascript
-// Container Component (smart component)
+```javascript
+// Container Component (Smart Component)
 import { LightningElement, wire } from 'lwc';
 import getAccounts from '@salesforce/apex/AccountController.getAccounts';
 
 export default class AccountContainer extends LightningElement {
-    @wire(getAccounts)
-    accounts;
+    @wire(getAccounts) accounts;
 
     handleAccountSelect(event) {
-        // Handle business logic
         const selectedId = event.detail.accountId;
         this.dispatchEvent(new CustomEvent('accountselected', {
             detail: { accountId: selectedId }
         }));
     }
 }
-\`\`\`
+````
 
-\`\`\`javascript
-// Presenter Component (dumb component)
+```javascript
+// Presenter Component (Dumb Component)
 import { LightningElement, api } from 'lwc';
 
 export default class AccountPresenter extends LightningElement {
@@ -49,14 +49,14 @@ export default class AccountPresenter extends LightningElement {
         }));
     }
 }
-\`\`\`
+```
 
 ### 2. Higher-Order Components
 
-Create reusable logic through composition:
+Encapsulate reusable logic using composition:
 
-\`\`\`javascript
-// withLoading.js - Higher-order component pattern
+```javascript
+// withLoading.js - Higher-Order Component pattern
 export function withLoading(BaseComponent) {
     return class extends BaseComponent {
         @api isLoading = false;
@@ -75,16 +75,18 @@ export function withLoading(BaseComponent) {
         }
     };
 }
-\`\`\`
+```
+
+---
 
 ## State Management Strategies
 
 ### 1. Event-Driven Architecture
 
-Implement a robust event system for component communication:
+Use a centralized event bus to enable decoupled communication:
 
-\`\`\`javascript
-// Event Bus Service
+```javascript
+// EventBus Service
 class EventBus extends EventTarget {
     static instance;
 
@@ -109,11 +111,13 @@ class EventBus extends EventTarget {
 }
 
 export default EventBus;
-\`\`\`
+```
 
 ### 2. Centralized State Management
 
-\`\`\`javascript
+Create a shared reactive state service:
+
+```javascript
 // stateManager.js
 class StateManager {
     constructor() {
@@ -146,14 +150,17 @@ class StateManager {
 }
 
 export default new StateManager();
-\`\`\`
+```
+
+---
 
 ## Performance Optimization Techniques
 
 ### 1. Lazy Loading Components
 
-\`\`\`javascript
-// Dynamic component loading
+Load components dynamically based on user interaction:
+
+```javascript
 export default class DynamicLoader extends LightningElement {
     componentToLoad;
 
@@ -166,15 +173,17 @@ export default class DynamicLoader extends LightningElement {
         }
     }
 }
-\`\`\`
+```
 
 ### 2. Memoization and Caching
 
-\`\`\`javascript
+Cache expensive computations:
+
+```javascript
 // Memoization utility
 function memoize(fn) {
     const cache = new Map();
-    return function(...args) {
+    return function (...args) {
         const key = JSON.stringify(args);
         if (cache.has(key)) {
             return cache.get(key);
@@ -186,26 +195,28 @@ function memoize(fn) {
 }
 
 export default class OptimizedComponent extends LightningElement {
-    // Memoized getter
     get expensiveComputation() {
         return this.memoizedCompute(this.data);
     }
 
     memoizedCompute = memoize((data) => {
-        // Expensive computation here
         return data.map(item => ({
             ...item,
             computed: this.performComplexCalculation(item)
         }));
     });
 }
-\`\`\`
+```
+
+---
 
 ## Error Handling and Resilience
 
 ### 1. Error Boundary Pattern
 
-\`\`\`javascript
+Catch and handle component-level errors:
+
+```javascript
 export default class ErrorBoundary extends LightningElement {
     @api fallbackComponent;
     hasError = false;
@@ -214,13 +225,10 @@ export default class ErrorBoundary extends LightningElement {
     errorCallback(error, stack) {
         this.hasError = true;
         this.errorInfo = { error, stack };
-        
-        // Log error to external service
         this.logError(error, stack);
     }
 
     logError(error, stack) {
-        // Send to logging service
         console.error('Component Error:', error, stack);
     }
 
@@ -229,11 +237,13 @@ export default class ErrorBoundary extends LightningElement {
         this.errorInfo = null;
     }
 }
-\`\`\`
+```
 
 ### 2. Graceful Degradation
 
-\`\`\`javascript
+Provide a fallback UI when an error occurs:
+
+```javascript
 export default class ResilientComponent extends LightningElement {
     @wire(getData)
     wiredData({ error, data }) {
@@ -245,7 +255,6 @@ export default class ResilientComponent extends LightningElement {
     }
 
     handleError(error) {
-        // Provide fallback functionality
         this.showFallbackUI = true;
         this.errorMessage = this.getFriendlyErrorMessage(error);
     }
@@ -253,20 +262,23 @@ export default class ResilientComponent extends LightningElement {
     getFriendlyErrorMessage(error) {
         const errorMap = {
             'NETWORK_ERROR': 'Please check your internet connection',
-            'PERMISSION_ERROR': 'You don\'t have permission to view this data',
+            'PERMISSION_ERROR': 'You don’t have permission to view this data',
             'DEFAULT': 'Something went wrong. Please try again.'
         };
-        
         return errorMap[error.type] || errorMap.DEFAULT;
     }
 }
-\`\`\`
+```
+
+---
 
 ## Testing Strategies
 
-### 1. Component Testing
+### 1. Component Unit Testing
 
-\`\`\`javascript
+Use `sfdx-lwc-jest` to write robust tests:
+
+```javascript
 // __tests__/accountContainer.test.js
 import { createElement } from 'lwc';
 import AccountContainer from 'c/accountContainer';
@@ -288,7 +300,6 @@ describe('c-account-container', () => {
         });
         document.body.appendChild(element);
 
-        // Mock data
         const mockAccounts = [
             { Id: '001', Name: 'Test Account 1' },
             { Id: '002', Name: 'Test Account 2' }
@@ -302,19 +313,21 @@ describe('c-account-container', () => {
         expect(accountElements.length).toBe(2);
     });
 });
-\`\`\`
-
-## Conclusion
-
-Mastering LWC architecture requires understanding these advanced patterns and applying them judiciously. Focus on:
-
-1. **Separation of Concerns**: Keep components focused and single-purpose
-2. **Performance**: Implement lazy loading and memoization where appropriate
-3. **Resilience**: Build error boundaries and graceful degradation
-4. **Testability**: Write comprehensive tests for your components
-
-By following these patterns, you'll build maintainable, scalable, and performant Lightning Web Components that stand the test of time.
+```
 
 ---
 
-*Want to learn more about Salesforce development? Follow me for more technical insights and best practices.*
+## Conclusion
+
+Mastering LWC architecture requires understanding and applying these advanced patterns. Focus on:
+
+1. **Separation of Concerns** – Keep components modular and focused
+2. **Performance** – Use lazy loading and memoization effectively
+3. **Resilience** – Implement robust error handling and fallback UIs
+4. **Testability** – Write thorough unit tests to ensure reliability
+
+By adopting these best practices, you'll build scalable, maintainable, and high-performing Lightning Web Components.
+
+---
+
+*Want more Salesforce insights and best practices? Follow for updates and future deep dives.*
